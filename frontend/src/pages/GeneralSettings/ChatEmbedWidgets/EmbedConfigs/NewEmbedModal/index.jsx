@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { X } from "@phosphor-icons/react";
-import Workspace from "@/models/workspace";
-import { TagsInput } from "react-tag-input-component";
-import Embed from "@/models/embed";
 import Toggle from "@/components/lib/Toggle";
+import Embed from "@/models/embed";
+import Workspace from "@/models/workspace";
+import { X } from "@phosphor-icons/react";
+import React, { useEffect, useState } from "react";
+import { TagsInput } from "react-tag-input-component";
 
 export function enforceSubmissionSchema(form) {
   const data = {};
@@ -22,6 +22,7 @@ export function enforceSubmissionSchema(form) {
   if (!data.hasOwnProperty("allow_prompt_override"))
     data.allow_prompt_override = false;
   if (!data.hasOwnProperty("message_limit")) data.message_limit = 20;
+  if (!data.hasOwnProperty("no_sponsor")) data.no_sponsor = false;
   return data;
 }
 
@@ -91,6 +92,35 @@ export default function NewEmbedModal({ closeModal }) {
                 name="allow_prompt_override"
                 title="Enable Prompt Override"
                 hint="Allow setting of the system prompt to override the workspace default."
+              />
+              <TextInput
+                name="brand_image_url"
+                title="Logo URL"
+                hint="URL of the image to use as the chat header logo. Leave blank to use the default AnythingLLM logo."
+                placeholder="https://example.com/logo.png"
+              />
+              <TextInput
+                name="language"
+                title="Widget Language"
+                hint="Language code for the chat widget (e.g. en, vn, zh, fr, de, es, ja, ko). Default is en."
+                placeholder="en"
+              />
+              <BooleanInput
+                name="no_sponsor"
+                title={'Hide "Powered by" text'}
+                hint={'Remove the "Powered by AnythingLLM" link at the bottom of the chat widget.'}
+              />
+              <TextInput
+                name="sponsor_text"
+                title={'Custom "Powered by" text'}
+                hint={'Replace "Powered by AnythingLLM" with your own branding. Only shown when "Hide Powered by" is off.'}
+                placeholder="Powered by My Company"
+              />
+              <TextInput
+                name="sponsor_link"
+                title={'Custom "Powered by" link'}
+                hint="URL for the custom sponsor link."
+                placeholder="https://mycompany.com"
               />
 
               {error && <p className="text-red-400 text-sm">Error: {error}</p>}
@@ -335,6 +365,32 @@ export const NumberInput = ({ name, title, hint, defaultValue = 0 }) => {
         min={0}
         defaultValue={defaultValue}
         onScroll={(e) => e.target.blur()}
+      />
+    </div>
+  );
+};
+
+export const TextInput = ({
+  name,
+  title,
+  hint,
+  placeholder = "",
+  defaultValue = "",
+}) => {
+  return (
+    <div>
+      <div className="flex flex-col mb-2">
+        <label htmlFor={name} className="block text-sm font-medium text-white">
+          {title}
+        </label>
+        <p className="text-theme-text-secondary text-xs">{hint}</p>
+      </div>
+      <input
+        type="text"
+        name={name}
+        className="border-none bg-theme-settings-input-bg text-white placeholder:text-theme-settings-input-placeholder text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5"
+        placeholder={placeholder}
+        defaultValue={defaultValue}
       />
     </div>
   );

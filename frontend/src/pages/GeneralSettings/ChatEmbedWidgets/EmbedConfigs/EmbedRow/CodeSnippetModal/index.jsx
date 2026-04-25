@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { CheckCircle, CopySimple, X } from "@phosphor-icons/react";
-import showToast from "@/utils/toast";
-import hljs from "highlight.js";
 import "@/utils/chat/themes/github-dark.css";
 import "@/utils/chat/themes/github.css";
+import showToast from "@/utils/toast";
+import { CheckCircle, CopySimple, X } from "@phosphor-icons/react";
+import hljs from "highlight.js";
+import React, { useState } from "react";
 
 export default function CodeSnippetModal({ embed, closeModal }) {
   return (
@@ -44,6 +44,20 @@ export default function CodeSnippetModal({ embed, closeModal }) {
 }
 
 function createScriptTagSnippet(embed, scriptHost, serverHost) {
+  const optionalAttrs = [
+    embed.brand_image_url
+      ? `  data-brand-image-url="${embed.brand_image_url}"`
+      : null,
+    embed.language && embed.language !== "en"
+      ? `  data-language="${embed.language}"`
+      : null,
+    embed.no_sponsor ? `  data-no-sponsor="true"` : null,
+    embed.sponsor_text ? `  data-sponsor-text="${embed.sponsor_text}"` : null,
+    embed.sponsor_link ? `  data-sponsor-link="${embed.sponsor_link}"` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
   return `<!--
 Paste this script at the bottom of your HTML before the </body> tag.
 See more style and config options on our docs
@@ -51,7 +65,7 @@ https://github.com/Mintplex-Labs/anythingllm-embed/blob/main/README.md
 -->
 <script
   data-embed-id="${embed.uuid}"
-  data-base-api-url="${serverHost}/api/embed"
+  data-base-api-url="${serverHost}/api/embed"${optionalAttrs ? `\n${optionalAttrs}` : ""}
   src="${scriptHost}/embed/anythingllm-chat-widget.min.js">
 </script>
 <!-- AnythingLLM (https://anythingllm.com) -->

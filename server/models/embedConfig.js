@@ -21,6 +21,11 @@ const EmbedConfig = {
     "chat_mode",
     "workspace_id",
     "message_limit",
+    "brand_image_url",
+    "no_sponsor",
+    "sponsor_text",
+    "sponsor_link",
+    "language",
   ],
 
   new: async function (data, creatorId = null) {
@@ -58,6 +63,14 @@ const EmbedConfig = {
             data?.message_limit,
             "message_limit"
           ),
+          brand_image_url: validatedCreationData(
+            data?.brand_image_url,
+            "brand_image_url"
+          ),
+          no_sponsor: validatedCreationData(data?.no_sponsor, "no_sponsor") ?? false,
+          sponsor_text: validatedCreationData(data?.sponsor_text, "sponsor_text"),
+          sponsor_link: validatedCreationData(data?.sponsor_link, "sponsor_link"),
+          language: validatedCreationData(data?.language, "language") ?? "en",
           createdBy: creatorId != null ? Number(creatorId) : null,
           workspace: {
             connect: { id: Number(data.workspace_id) },
@@ -195,6 +208,14 @@ const BOOLEAN_KEYS = [
   "allow_temperature_override",
   "allow_prompt_override",
   "enabled",
+  "no_sponsor",
+];
+
+const STRING_KEYS = [
+  "brand_image_url",
+  "sponsor_text",
+  "sponsor_link",
+  "language",
 ];
 
 const NUMBER_KEYS = [
@@ -243,6 +264,11 @@ function validatedCreationData(value, field) {
 
   if (NUMBER_KEYS.includes(field)) {
     return isNaN(value) || Number(value) <= 0 ? null : Number(value);
+  }
+
+  if (STRING_KEYS.includes(field)) {
+    if (!value || typeof value !== "string") return null;
+    return value.trim() || null;
   }
 
   return null;

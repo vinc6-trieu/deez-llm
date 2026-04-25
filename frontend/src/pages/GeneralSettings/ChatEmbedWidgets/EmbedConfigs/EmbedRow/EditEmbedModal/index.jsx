@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { X } from "@phosphor-icons/react";
-import {
-  BooleanInput,
-  ChatModeSelection,
-  NumberInput,
-  PermittedDomains,
-  WorkspaceSelection,
-  enforceSubmissionSchema,
-} from "../../NewEmbedModal";
 import Embed from "@/models/embed";
-import showToast from "@/utils/toast";
 import { safeJsonParse } from "@/utils/request";
+import showToast from "@/utils/toast";
+import { X } from "@phosphor-icons/react";
+import React, { useState } from "react";
+import {
+    BooleanInput,
+    ChatModeSelection,
+    NumberInput,
+    PermittedDomains,
+    TextInput,
+    WorkspaceSelection,
+    enforceSubmissionSchema,
+} from "../../NewEmbedModal";
 
 export default function EditEmbedModal({ embed, closeModal }) {
   const [error, setError] = useState(null);
@@ -92,6 +93,40 @@ export default function EditEmbedModal({ embed, closeModal }) {
                 title="Enable Prompt Override"
                 hint="Allow setting of the system prompt to override the workspace default."
                 defaultValue={embed.allow_prompt_override}
+              />
+              <TextInput
+                name="brand_image_url"
+                title="Logo URL"
+                hint="URL of the image to use as the chat header logo. Leave blank to use the default AnythingLLM logo."
+                placeholder="https://example.com/logo.png"
+                defaultValue={embed.brand_image_url ?? ""}
+              />
+              <TextInput
+                name="language"
+                title="Widget Language"
+                hint="Language code for the chat widget (e.g. en, vn, zh, fr, de, es, ja, ko). Default is en."
+                placeholder="en"
+                defaultValue={embed.language ?? "en"}
+              />
+              <BooleanInput
+                name="no_sponsor"
+                title={'Hide "Powered by" text'}
+                hint={'Remove the "Powered by AnythingLLM" link at the bottom of the chat widget.'}
+                defaultValue={embed.no_sponsor ?? false}
+              />
+              <TextInput
+                name="sponsor_text"
+                title={'Custom "Powered by" text'}
+                hint={'Replace "Powered by AnythingLLM" with your own branding. Only shown when "Hide Powered by" is off.'}
+                placeholder="Powered by My Company"
+                defaultValue={embed.sponsor_text ?? ""}
+              />
+              <TextInput
+                name="sponsor_link"
+                title={'Custom "Powered by" link'}
+                hint="URL for the custom sponsor link."
+                placeholder="https://mycompany.com"
+                defaultValue={embed.sponsor_link ?? ""}
               />
 
               {error && <p className="text-red-400 text-sm">Error: {error}</p>}

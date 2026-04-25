@@ -32,12 +32,25 @@ class RuntimeSettings {
       validate: (value) => String(value) === "true",
     },
     browserLaunchArgs: {
-      default: [],
+      // When running as root (e.g. in Docker), Chromium requires --no-sandbox.
+      get default() {
+        const args = [];
+        if (process.getuid?.() === 0) {
+          args.push("--no-sandbox", "--disable-setuid-sandbox");
+        }
+        return args;
+      },
       validate: (value) => {
         let args = [];
         if (Array.isArray(value)) args = value.map((arg) => String(arg.trim()));
         if (typeof value === "string")
           args = value.split(",").map((arg) => arg.trim());
+        // When running as root (e.g. in Docker), Chromium requires --no-sandbox.
+        if (process.getuid?.() === 0) {
+          if (!args.includes("--no-sandbox")) args.push("--no-sandbox");
+          if (!args.includes("--disable-setuid-sandbox"))
+            args.push("--disable-setuid-sandbox");
+        }
         return args;
       },
     },
