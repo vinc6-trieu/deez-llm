@@ -245,6 +245,8 @@ model embed_configs {
   sponsor_text               String?
   sponsor_link               String?
   language                   String        @default("en")
+  assistant_name             String?
+  assistant_icon             String?
   workspace_id               Int
   createdBy                  Int?
   usersId                    Int?

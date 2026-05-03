@@ -48,6 +48,12 @@ function createScriptTagSnippet(embed, scriptHost, serverHost) {
     embed.brand_image_url
       ? `  data-brand-image-url="${embed.brand_image_url}"`
       : null,
+    embed.assistant_name
+      ? `  data-assistant-name="${embed.assistant_name}"`
+      : null,
+    embed.assistant_icon
+      ? `  data-assistant-icon="${embed.assistant_icon}"`
+      : null,
     embed.language && embed.language !== "en"
       ? `  data-language="${embed.language}"`
       : null,

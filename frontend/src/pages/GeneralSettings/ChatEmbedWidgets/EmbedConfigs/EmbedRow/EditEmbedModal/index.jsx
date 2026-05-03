@@ -102,6 +102,20 @@ export default function EditEmbedModal({ embed, closeModal }) {
                 defaultValue={embed.brand_image_url ?? ""}
               />
               <TextInput
+                name="assistant_name"
+                title="Assistant Name"
+                hint='Name displayed in the chat header. Default is "AnythingLLM Chat Assistant".'
+                placeholder="AnythingLLM Chat Assistant"
+                defaultValue={embed.assistant_name ?? ""}
+              />
+              <TextInput
+                name="assistant_icon"
+                title="Assistant Avatar URL"
+                hint="URL of the image to use as the assistant avatar shown next to chat messages."
+                placeholder="https://example.com/avatar.png"
+                defaultValue={embed.assistant_icon ?? ""}
+              />
+              <TextInput
                 name="language"
                 title="Widget Language"
                 hint="Language code for the chat widget (e.g. en, vn, zh, fr, de, es, ja, ko). Default is en."

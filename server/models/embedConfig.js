@@ -26,6 +26,8 @@ const EmbedConfig = {
     "sponsor_text",
     "sponsor_link",
     "language",
+    "assistant_name",
+    "assistant_icon",
   ],
 
   new: async function (data, creatorId = null) {
@@ -71,6 +73,8 @@ const EmbedConfig = {
           sponsor_text: validatedCreationData(data?.sponsor_text, "sponsor_text"),
           sponsor_link: validatedCreationData(data?.sponsor_link, "sponsor_link"),
           language: validatedCreationData(data?.language, "language") ?? "en",
+          assistant_name: validatedCreationData(data?.assistant_name, "assistant_name"),
+          assistant_icon: validatedCreationData(data?.assistant_icon, "assistant_icon"),
           createdBy: creatorId != null ? Number(creatorId) : null,
           workspace: {
             connect: { id: Number(data.workspace_id) },
@@ -216,6 +220,8 @@ const STRING_KEYS = [
   "sponsor_text",
   "sponsor_link",
   "language",
+  "assistant_name",
+  "assistant_icon",
 ];
 
 const NUMBER_KEYS = [
